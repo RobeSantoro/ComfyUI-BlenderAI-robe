@@ -1128,6 +1128,27 @@ def cache_to_local(data, suffix="png", save_path="") -> Path:
         return save_path
 
 
+def load_preview_img_editor(img_paths: list):
+    """
+        Load the last image in the img_paths list to the image editor.
+        img_paths example:
+        img_paths = [
+        {'filename': 'ComfyUI_temp_fqapj_00001_.png',
+        'subfolder': '',
+        'type': 'temp'}
+        ]
+    """
+
+    img_filenames = [img_path["filename"] for img_path in img_paths]
+    img_filename = img_filenames[-1]
+    img_file = bpy.data.images[f"{img_filename}"]
+    for area in bpy.context.screen.areas:
+        if area.type == "IMAGE_EDITOR":
+            area.spaces.active.image = img_file
+    
+    return
+
+
 class 预览(BluePrintBase):
     comfyClass = "预览"
 
@@ -1200,6 +1221,7 @@ class 预览(BluePrintBase):
                     p.image = img
                 except TypeError:
                     ...
+            load_preview_img_editor(img_paths)
         Timer.put((f, self, img_paths))
 
 
