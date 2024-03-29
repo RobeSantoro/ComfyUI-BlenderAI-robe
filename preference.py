@@ -120,6 +120,7 @@ class AddonPreference(bpy.types.AddonPreferences):
 
     def update_debug(self, context):
         toggle_debug(self.debug)
+
     debug: bpy.props.BoolProperty(default=False, name="Debug", update=update_debug)
     popup_scale: bpy.props.IntProperty(default=5, min=1, max=100, name="Preview Image Size")
     enable_hq_preview: bpy.props.BoolProperty(default=True, name="Enable High Quality Preview Image")
@@ -128,10 +129,11 @@ class AddonPreference(bpy.types.AddonPreferences):
                                                ],
                                         name="Server Type")  # --server_type
     model_path: bpy.props.StringProperty(subtype="DIR_PATH", name="ComfyUI Path",
-                                         default=str(Path(__file__).parent / "ComfyUI"))
+                                         default="E:\\COMFY\\ComfyUI-robe\\")
     python_path: bpy.props.StringProperty(subtype="FILE_PATH",
                                           name="Python Path",
-                                          description="Select python dir or python.exe")
+                                          description="Select python dir or python.exe",
+                                          default="C:\\Users\\robesantoro\\.conda\\envs\\comfy\\")
     page: bpy.props.EnumProperty(items=[("通用", "General", "", "COLLAPSEMENU", 0),
                                         ("常用路径", "Common Path", "", "URL", 1),
                                         ("友情链接", "Friendly Links", "", "URL", 2),
