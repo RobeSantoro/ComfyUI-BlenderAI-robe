@@ -1525,7 +1525,7 @@ class SaveImage(BluePrintBase):
 
 class 输入图像(BluePrintBase):  # input image
 
-    comfyClass = "输入图像"
+    comfyClass = "输入图像"  # input image
 
     def spec_extra_properties(s, properties, nname, ndesc):
         prop = bpy.props.PointerProperty(type=bpy.types.Image)
@@ -1557,14 +1557,14 @@ class 输入图像(BluePrintBase):  # input image
 
     def spec_draw(s, self: NodeBase, context: Context, layout: UILayout, prop: str, swsock=True, swdisp=False) -> bool:
         if prop == "mode":
-            if self.mode == "序列图":
+            if self.mode == "序列图":  # Image Sequence
                 layout.prop(self, "frames_dir", text="")
             else:
                 layout.prop(self, "image", text="", text_ctxt=self.get_ctxt())
             layout.row().prop(self, prop, expand=True, text_ctxt=self.get_ctxt())
-            if self.mode == "序列图":
+            if self.mode == "序列图":  # Image Sequence
                 layout.label(text="Frames Directory", text_ctxt=self.get_ctxt())
-            if self.mode == "渲染":
+            if self.mode == "渲染":  # Render
                 layout.label(text="Set Image Path of Render Result(.png)", icon="ERROR")
                 if bpy.context.scene.use_nodes:
                     row = layout.row(align=True)
@@ -1587,7 +1587,7 @@ class 输入图像(BluePrintBase):  # input image
                     update_screen()
                 if Icon.try_mark_image(self.image) or not self.prev:
                     Timer.put((f, self))
-                elif Icon.find_image(self.image) != self.prev:  # 修复加载A 后加载B图, 再加载A时 不更新
+                elif Icon.find_image(self.image) != self.prev:  # 修复加载A 后加载B图, 再加载A时 不更新 - Fix loading A and then loading B, then loading A does not update
                     Timer.put((f, self))
             elif self.prev:
                 def f(self):
@@ -1611,18 +1611,18 @@ class 输入图像(BluePrintBase):  # input image
 
     def pre_fn(s, self: NodeBase):
         def render():
-            if self.mode not in {"渲染", "视口"}:
+            if self.mode not in {"渲染", "视口"}:  # not in Render, Viewport
                 return
             if self.disable_render or bpy.context.scene.sdn.disable_render_all:
                 return
-            if self.mode == "视口":
-                # 使用临时文件
+            if self.mode == "视口":  # Viewport
+                # 使用临时文件 - Use temporary files
                 self.image = Path(tempfile.gettempdir()).joinpath("viewport.png").as_posix()
             logger.warning("%s->%s", _T('Render'), self.image)
             old = bpy.context.scene.render.filepath
             bpy.context.scene.render.filepath = self.image
-            if self.mode == "视口":
-                # 场景相机可能为空
+            if self.mode == "视口":  # Viewport
+                # 场景相机可能为空  - Scene camera may be empty
                 if not bpy.context.scene.camera:
                     err_info = _T("No Camera in Scene") + " -> " + bpy.context.scene.name
                     raise Exception(err_info)
@@ -1655,12 +1655,12 @@ class 输入图像(BluePrintBase):  # input image
         @Timer.wait_run
         def r():
             render()
-            # 上传图片
+            # 上传图片 - Upload image
             upload_image(self.image)
         r()
 
     def serialize_pre(s, self: NodeBase):
-        if self.mode == "视口":
+        if self.mode == "视口":  # Viewport
             if not self.image:
                 self.image = Path(tempfile.gettempdir()).joinpath("viewport.png").as_posix()
             if Path(self.image).is_dir():
