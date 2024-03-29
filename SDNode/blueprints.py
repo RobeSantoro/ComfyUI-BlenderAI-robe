@@ -1149,7 +1149,7 @@ def load_preview_img_editor(img_paths: list):
     return
 
 
-class 预览(BluePrintBase):
+class 预览(BluePrintBase):  # Preview
     comfyClass = "预览"
 
     def spec_extra_properties(s, properties, nname, ndesc):
@@ -1300,7 +1300,7 @@ class PreviewImage(BluePrintBase):
         Timer.put((f, self, img_paths))
 
 
-class 存储(BluePrintBase):
+class 存储(BluePrintBase):  # Storage
     comfyClass = "存储"
 
     def spec_extra_properties(s, properties, nname, ndesc):
@@ -1523,7 +1523,8 @@ class SaveImage(BluePrintBase):
         return {self.id: (self.serialize(parent=parent), self.pre_fn, post_fn)}
 
 
-class 输入图像(BluePrintBase):
+class 输入图像(BluePrintBase):  # input image
+
     comfyClass = "输入图像"
 
     def spec_extra_properties(s, properties, nname, ndesc):
@@ -1673,7 +1674,8 @@ class 输入图像(BluePrintBase):
             cfg["inputs"]["image"] = cfg["inputs"]["image"].replace("\\\\", "/").replace("\\", "/")
 
 
-class 材质图(BluePrintBase):
+class 材质图(BluePrintBase):  # Material map
+
     comfyClass = "材质图"
 
     def new_btn_enable(s, self, layout, context):
@@ -1712,7 +1714,7 @@ class 材质图(BluePrintBase):
         return True
 
 
-class 截图(BluePrintBase):
+class 截图(BluePrintBase):  # screenshot
     comfyClass = "截图"
 
     def draw_button(s, self: NodeBase, context: Context, layout: UILayout, prop: str, swsock=True, swdisp=False):
